@@ -19,33 +19,15 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     throw new ArgumentNullException(path);
                 }
 
-                if (!Path.IsPathRooted(path))
-                {
-                    var assembly = typeof(ScriptRunner).GetTypeInfo().Assembly;
-                    var uri = new UriBuilder(assembly.CodeBase);
-                    var assemblyPath = Uri.UnescapeDataString(uri.Path);
-                    assemblyPath = Path.GetDirectoryName(assemblyPath);
-                    path = Path.Combine(assemblyPath, path);
-                }
+                path = GetRootedPath(ref path);
 
                 if (!File.Exists(path))
                 {
                     throw new FileNotFoundException($"A script file with the path <{path}> was not found.");
                 }
 
-                var code = new StringBuilder();
-                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
-                {
-                    var buffer = new byte[0x1000];
-                    int bytesRead;
-                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
-                    {
-                        var codeChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                        code.Append(codeChunk);
-                    }
-                }
-
-                var result = await CSharpScript.EvaluateAsync(code.ToString());
+                var code = await LoadCodeAsync(path);
+                var result = await CSharpScript.EvaluateAsync(code);
             }
             catch(CompilationErrorException e)
             {
@@ -53,6 +35,42 @@ namespace CustomCode.Core.CodeGeneration.Scripting
             }
 
             return null;
+        }
+
+        private string GetRootedPath(ref string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
+            if (!Path.IsPathRooted(path))
+            {
+                var assembly = typeof(ScriptRunner).GetTypeInfo().Assembly;
+                var uri = new UriBuilder(assembly.CodeBase);
+                var assemblyPath = Uri.UnescapeDataString(uri.Path);
+                assemblyPath = Path.GetDirectoryName(assemblyPath);
+                return Path.Combine(assemblyPath, path);
+            }
+
+            return path;
+        }
+
+        private async Task<string> LoadCodeAsync(string path)
+        {
+            var code = new StringBuilder();
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+            {
+                var buffer = new byte[0x1000];
+                int bytesRead;
+                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                {
+                    var codeChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    code.Append(codeChunk);
+                }
+            }
+
+            return code.ToString();
         }
     }
 }
