@@ -1,16 +1,35 @@
 namespace CustomCode.Core.CodeGeneration.Scripting
 {
+    using Features;
     using Microsoft.CodeAnalysis.CSharp.Scripting;
     using Microsoft.CodeAnalysis.Scripting;
     using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
-    using System.Text;
     using System.Threading.Tasks;
 
     public sealed class ScriptRunner : IScriptRunner
     {
+        #region Dependencies
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="ScriptRunner"/> type.
+        /// </summary>
+        /// <param name="featureAnalyzers"> A collection with available <see cref="IFeatureAnalyzer"/>s. </param>
+        public ScriptRunner(IEnumerable<IFeatureAnalyzer> featureAnalyzers)
+        {
+            FeatureAnalyzers = featureAnalyzers;
+        }
+
+        /// <summary>
+        /// Gets a collection with available <see cref="IFeatureAnalyzer"/>s.
+        /// </summary>
+        private IEnumerable<IFeatureAnalyzer> FeatureAnalyzers { get; }
+
+        #endregion
+
         public async Task<IScript> ExecuteAsync(string path)
         {
             try
@@ -27,16 +46,27 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     throw new FileNotFoundException($"A script file with the path <{path}> was not found.");
                 }
 
+                var features = new List<IFeature>();
                 using (var codeStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
                 {
-                    var script = await Task.Run(() => CSharpScript.Create(codeStream));
+                    var options = CreateOptions();
+                    var script = await Task.Run(() => CSharpScript.Create(codeStream, options, globalsType: typeof(ScriptContext)));
                     var compilation = script.GetCompilation();
+
+                    foreach (var analyzer in FeatureAnalyzers)
+                    {
+                        if (analyzer.HasFeature(compilation.SyntaxTrees, out var feature))
+                        {
+                            features.Add(feature);
+                        }
+                    }
+
                     var diagnostics = compilation.GetDiagnostics();
-                    var state = await script.RunAsync();
+                    var state = await script.RunAsync(new ScriptContext());
                     var result = state.ReturnValue;
                 }
             }
-            catch(CompilationErrorException e)
+            catch (CompilationErrorException e)
             {
                 // ToDo
             }
@@ -63,21 +93,20 @@ namespace CustomCode.Core.CodeGeneration.Scripting
             return path;
         }
 
-        private async Task<string> LoadCodeAsync(string path)
+        private ScriptOptions CreateOptions()
         {
-            var code = new StringBuilder();
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
-            {
-                var buffer = new byte[0x1000];
-                int bytesRead;
-                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
-                {
-                    var codeChunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    code.Append(codeChunk);
-                }
-            }
-
-            return code.ToString();
+            var options = ScriptOptions
+                .Default
+                .WithReferences(new[]
+                    {
+                        typeof(DynamicObject).GetTypeInfo().Assembly, // System.Dynamic.Runtime
+                        typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).GetTypeInfo().Assembly // Microsoft.CSharp
+                    })
+                .WithImports(new[]
+                    {
+                            typeof(DynamicObject).GetTypeInfo().Namespace // System.Dynamic
+                    });
+            return options;
         }
     }
 }
