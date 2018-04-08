@@ -4,6 +4,6 @@ namespace CustomCode.Core.CodeGeneration.Scripting
 
     public interface IScriptRunner
     {
-        Task<IScript> ExecuteAsync(string path);
+        Task<IScript> ExecuteAsync(string path, params (string name, object value)[] parameters);
     }
 }

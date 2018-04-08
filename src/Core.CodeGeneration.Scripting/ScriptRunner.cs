@@ -30,7 +30,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting
 
         #endregion
 
-        public async Task<IScript> ExecuteAsync(string path)
+        public async Task<IScript> ExecuteAsync(string path, params (string name, object value)[] parameters)
         {
             try
             {
@@ -54,16 +54,23 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     var code = script.Code;
                     var compilation = script.GetCompilation();
 
+                    var context = new ScriptContext();
                     foreach (var analyzer in FeatureAnalyzers)
                     {
                         if (analyzer.HasFeature(compilation.SyntaxTrees, out var feature))
                         {
+                            if (feature is IParameterCollection parameterFeature)
+                            {
+                                parameterFeature.UpdateValues(parameters);
+                                context = new ScriptContext(parameterFeature.AsDynamic());
+                            }
+
                             features.Add(feature);
                         }
                     }
 
                     var diagnostics = compilation.GetDiagnostics();
-                    var state = await script.RunAsync(new ScriptContext());
+                    var state = await script.RunAsync(context);
                     var result = state.ReturnValue;
 
                     return new Script(code, features);
