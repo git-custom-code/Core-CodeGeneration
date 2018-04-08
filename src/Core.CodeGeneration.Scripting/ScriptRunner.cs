@@ -4,6 +4,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting
     using Microsoft.CodeAnalysis.Scripting;
     using System;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
@@ -26,8 +27,14 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     throw new FileNotFoundException($"A script file with the path <{path}> was not found.");
                 }
 
-                var code = await LoadCodeAsync(path);
-                var result = await CSharpScript.EvaluateAsync(code);
+                using (var codeStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+                {
+                    var script = await Task.Run(() => CSharpScript.Create(codeStream));
+                    var compilation = script.GetCompilation();
+                    var diagnostics = compilation.GetDiagnostics();
+                    var state = await script.RunAsync();
+                    var result = state.ReturnValue;
+                }
             }
             catch(CompilationErrorException e)
             {
