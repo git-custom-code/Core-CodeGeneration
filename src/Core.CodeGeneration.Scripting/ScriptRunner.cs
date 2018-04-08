@@ -9,7 +9,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting
     using System.IO;
     using System.Reflection;
     using System.Threading.Tasks;
-
+ 
     public sealed class ScriptRunner : IScriptRunner
     {
         #region Dependencies
@@ -46,11 +46,12 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     throw new FileNotFoundException($"A script file with the path <{path}> was not found.");
                 }
 
-                var features = new List<IFeature>();
+                var features = new HashSet<IFeature>();
                 using (var codeStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
                 {
                     var options = CreateOptions();
                     var script = await Task.Run(() => CSharpScript.Create(codeStream, options, globalsType: typeof(ScriptContext)));
+                    var code = script.Code;
                     var compilation = script.GetCompilation();
 
                     foreach (var analyzer in FeatureAnalyzers)
@@ -64,6 +65,8 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     var diagnostics = compilation.GetDiagnostics();
                     var state = await script.RunAsync(new ScriptContext());
                     var result = state.ReturnValue;
+
+                    return new Script(code, features);
                 }
             }
             catch (CompilationErrorException e)
