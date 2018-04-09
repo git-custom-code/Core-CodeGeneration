@@ -68,12 +68,14 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                             features.Add(feature);
                         }
                     }
+                    var result = new Script(code, features);
+                    result.Feature<IParameterCollection>()?.ValidateParameterNames(true, false, parameters);
 
                     var diagnostics = compilation.GetDiagnostics();
                     var state = await script.RunAsync(context);
-                    var result = state.ReturnValue;
+                    var returnValue = state.ReturnValue;
 
-                    return new Script(code, features);
+                    return result;
                 }
             }
             catch (CompilationErrorException e)

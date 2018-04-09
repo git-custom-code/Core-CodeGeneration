@@ -1,5 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Scripting
 {
+    using ExceptionHandling;
     using Extensions;
     using Features;
     using System.Collections.Generic;
@@ -37,6 +38,38 @@ namespace CustomCode.Core.CodeGeneration.Scripting
         /// Gets the script's (c#) source code.
         /// </summary>
         public string SourceCode { get; }
+
+        #endregion
+
+        #region Logic
+
+        /// <summary>
+        /// Access a specific <see cref="IFeature"/> by type.
+        /// </summary>
+        /// <typeparam name="T"> The type of the feature. </typeparam>
+        /// <param name="throwIfFeatureIsMissing"> Toggle if missing features should be ignored or not. </param>
+        /// <returns> The requested feature or null (if <paramref name="throwIfFeatureIsMissing"/> is false). </returns>
+        /// <exception cref="ExceptionHandling.MissingFeatureException"></exception>
+        public T Feature<T>(bool throwIfFeatureIsMissing = false) where T : IFeature
+        {
+            var feature = Features.OfType<T>().FirstOrDefault();
+            if (throwIfFeatureIsMissing && feature == null)
+            {
+                throw new ScriptMissingFeatureException(this, typeof(T));
+            }
+
+            return feature;
+        }
+
+        /// <summary>
+        /// Query if the script uses a specific <see cref="IFeature"/>.
+        /// </summary>
+        /// <typeparam name="T"> The type of the feature. </typeparam>
+        /// <returns> True if the specified feature is used, false otherwise. </returns>
+        public bool HasFeature<T>() where T : IFeature
+        {
+            return Features.OfType<T>().Any();
+        }
 
         #endregion
     }

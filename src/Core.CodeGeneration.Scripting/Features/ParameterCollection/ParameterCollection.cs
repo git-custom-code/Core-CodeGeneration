@@ -1,5 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Scripting.Features
 {
+    using CustomCode.Core.CodeGeneration.Scripting.ExceptionHandling;
     using System.Collections;
     using System.Collections.Generic;
     using System.Dynamic;
@@ -118,10 +119,39 @@ namespace CustomCode.Core.CodeGeneration.Scripting.Features
                 {
                     Parameters[name] = value;
                 }
-                else
+            }
+        }
+
+        /// <summary>
+        /// Validate if supplied script parameters match with the parameters used by the script.
+        /// </summary>
+        /// <param name="ignoreAdditionalParameters">
+        /// True if additional parameters (not used by the script) should not be validated, false otherwise.
+        /// </param>
+        /// <param name="ignoreMissingParameters">
+        /// True if missing parameters (used by the script) should not be validated, false otherwise.
+        /// </param>
+        /// <param name="parameters"> A collection of supplied script parameters. </param>
+        public void ValidateParameterNames(
+            bool ignoreAdditionalParameters,
+            bool ignoreMissingParameters,
+            params (string name, object value)[] parameters)
+        {
+            var additionalParameters = parameters.Where(p => Parameters.ContainsKey(p.name)).ToList();
+            var missingParameters = Parameters.Keys.Except(parameters.Select(p => p.name)).ToList();
+
+            if (ignoreAdditionalParameters == false && additionalParameters.Count > 0)
+            {
+                if (ignoreMissingParameters == false && missingParameters.Count > 0)
                 {
-                    // ToDo
+                    throw new ScriptParameterMissmatchException(Script, additionalParameters, missingParameters);
                 }
+
+                throw new ScriptParameterMissmatchException(Script, additionalParameters, missingParameters);
+            }
+            else if (ignoreMissingParameters == false && missingParameters.Count > 0)
+            {
+                throw new ScriptParameterMissmatchException(Script, additionalParameters, missingParameters);
             }
         }
 
