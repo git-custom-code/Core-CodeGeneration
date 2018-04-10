@@ -1,5 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Modelling.IO
 {
+    using Composition;
     using Newtonsoft.Json;
     using System;
     using System.IO;
@@ -8,6 +9,7 @@ namespace CustomCode.Core.CodeGeneration.Modelling.IO
     /// <summary>
     /// Type that allows asynchronous loading of persisted .json <see cref="IModel"/>s from disk.
     /// </summary>
+    [Export]
     public sealed class JsonModelReader : IModelReader
     {
         #region Logic

@@ -1,5 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Modelling.IO
 {
+    using Composition;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -9,6 +10,7 @@ namespace CustomCode.Core.CodeGeneration.Modelling.IO
     /// <summary>
     /// Repository that allows access to persisted <see cref="IModel"/> instances.
     /// </summary>
+    [Export]
     public sealed class ModelRepository : IModelRepository
     {
         #region Dependencies
