@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <RootNamespace>CustomCode.Core.CodeGeneration.Scripting</RootNamespace>
+    <RootNamespace>CustomCode.Core.CodeGeneration.Modelling</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.6\Core.CodeGeneration.Scripting.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard1.6\Core.CodeGeneration.Modelling.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,13 +17,9 @@
 
   <ItemGroup>
     <PackageReference Include="CustomCode.Core.ExceptionHandling" Version="1.0.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.7.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Core.CodeGeneration.Modelling\Core.CodeGeneration.Modelling.csproj" />
   </ItemGroup>
 
 </Project>

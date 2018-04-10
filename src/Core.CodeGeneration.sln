@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0A704A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.CodeGeneration.Scripting", "Core.CodeGeneration.Scripting\Core.CodeGeneration.Scripting.csproj", "{93D0CF1A-6BEF-4D04-A8EB-07DDCE2E46B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Core.CodeGeneration.Scripting", "Test.Core.CodeGeneration.Scripting\Test.Core.CodeGeneration.Scripting.csproj", "{977D8D7D-7372-45AC-AD56-380E7E804CBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Core.CodeGeneration.Scripting", "Test.Core.CodeGeneration.Scripting\Test.Core.CodeGeneration.Scripting.csproj", "{977D8D7D-7372-45AC-AD56-380E7E804CBE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.CodeGeneration.Modelling", "Core.CodeGeneration.Modelling\Core.CodeGeneration.Modelling.csproj", "{C8E73D42-FF2F-4624-8F0C-FD7B5A50145D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{977D8D7D-7372-45AC-AD56-380E7E804CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{977D8D7D-7372-45AC-AD56-380E7E804CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{977D8D7D-7372-45AC-AD56-380E7E804CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8E73D42-FF2F-4624-8F0C-FD7B5A50145D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8E73D42-FF2F-4624-8F0C-FD7B5A50145D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8E73D42-FF2F-4624-8F0C-FD7B5A50145D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8E73D42-FF2F-4624-8F0C-FD7B5A50145D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
