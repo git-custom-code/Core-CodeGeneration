@@ -62,7 +62,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting.Features
         }
 
         /// <summary>
-        /// Returns the hash code for this <see cref="IScriptFeature"/>.
+        /// Returns the hash code for this <see cref="IFeature"/>.
         /// </summary>
         /// <returns> A 32-bit signed integer hash code. </returns>
         public override int GetHashCode()

@@ -18,7 +18,9 @@ namespace CustomCode.Core.CodeGeneration.Scripting
         /// <typeparam name="T"> The type of the feature. </typeparam>
         /// <param name="throwIfFeatureIsMissing"> Toggle if missing features should be ignored or not. </param>
         /// <returns> The requested feature or null (if <paramref name="throwIfFeatureIsMissing"/> is false). </returns>
-        /// <exception cref="ExceptionHandling.MissingFeatureException"></exception>
+        /// <exception cref="ExceptionHandling.ScriptMissingFeatureException">
+        /// Thrown if the requested feature was missing and <paramref name="throwIfFeatureIsMissing"/> is set to true.
+        /// </exception>
         T Feature<T>(bool throwIfFeatureIsMissing = false) where T : IFeature;
 
         /// <summary>
