@@ -75,6 +75,8 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     var state = await script.RunAsync(context);
                     var returnValue = state.ReturnValue;
 
+                    result.Feature<IMutableResultCollection>()?.ValidateResultValueNames(context.Out);
+                    result.Feature<IMutableResultCollection>()?.UpdateValues(context.Out);
                     return result;
                 }
             }

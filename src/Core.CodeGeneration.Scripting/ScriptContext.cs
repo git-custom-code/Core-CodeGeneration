@@ -31,7 +31,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting
         #region Data
 
         /// <summary>
-        /// Gets or sets a collection of script input parameters
+        /// Gets or sets a collection of script input parameters.
         /// </summary>
         /// <example>
         ///
@@ -41,6 +41,18 @@ namespace CustomCode.Core.CodeGeneration.Scripting
         ///
         /// </example>
         public dynamic In { get; }
+
+        /// <summary>
+        /// Gets or sets a collection of script output parameters.
+        /// </summary>
+        /// <example>
+        ///
+        /// Usage in .csx scripts:
+        ///
+        /// Out.Parameter1 = param1;
+        ///
+        /// </example>
+        public dynamic Out { get; } = new ExpandoObject();
 
         #endregion
     }
