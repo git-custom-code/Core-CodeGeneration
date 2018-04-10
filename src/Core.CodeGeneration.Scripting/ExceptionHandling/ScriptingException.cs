@@ -79,7 +79,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting.ExceptionHandling
 
         /// <summary>
         /// Convert exception data to an object array that can be used via <see cref="string.Format(string, object[])"/>
-        //  for localization purposes.
+        /// for localization purposes.
         /// </summary>
         /// <returns> The exception's format items for localization or null. </returns>
         public override object[] GetFormatItems()
