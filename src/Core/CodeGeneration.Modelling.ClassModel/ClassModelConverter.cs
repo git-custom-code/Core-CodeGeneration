@@ -28,13 +28,12 @@ namespace CustomCode.Core.CodeGeneration.Modelling.ClassModel
         {
             var @object = JObject.Load(reader);
             var namespaces = new HashSet<INamespace>();
-            foreach (var property in @object)
+            foreach (var property in @object.Properties())
             {
                 // ToDo what about objects that are not namespaces? ignore all other properties?
-
                 if (property.Value.Type == JTokenType.Object)
                 {
-                    var @namespace = property.Value.ToObject<INamespace>(serializer);
+                    var @namespace = property.ToObject<INamespace>(serializer);
                     namespaces.Add(@namespace);
                 }
             }

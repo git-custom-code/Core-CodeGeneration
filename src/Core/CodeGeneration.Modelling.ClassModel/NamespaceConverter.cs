@@ -26,18 +26,25 @@ namespace CustomCode.Core.CodeGeneration.Modelling.ClassModel
         public override INamespace ReadJson(
             JsonReader reader, Type objectType, INamespace existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var @object = JObject.Load(reader);
-            var name = reader.Path;
-            if (name.StartsWith("['") || name.EndsWith("']"))
+            if (reader.TokenType == JsonToken.StartObject)
             {
-                name = name.Replace("['", string.Empty).Replace("']", string.Empty);
+                reader.Read();
             }
+
+            if (reader.TokenType != JsonToken.PropertyName)
+            {
+                return null;
+            }
+
+            var @namespace = JProperty.Load(reader);
+            var name = @namespace.Name;
+            var @object = @namespace.Value as JObject;
             var classes = new HashSet<IClass>();
-            foreach (var property in @object)
+            foreach (var property in @object.Properties())
             {
                 if (property.Value.Type == JTokenType.Object)
                 {
-                    var @class = property.Value.ToObject<IClass>(serializer);
+                    var @class = property.ToObject<IClass>(serializer);
                     classes.Add(@class);
                 }
             }

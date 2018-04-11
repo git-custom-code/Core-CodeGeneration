@@ -26,13 +26,19 @@ namespace CustomCode.Core.CodeGeneration.Modelling.ClassModel
         public override IClass ReadJson(
             JsonReader reader, Type objectType, IClass existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var @object = JObject.Load(reader);
-            var name = reader.Path;
-            if (name.StartsWith("['") || name.EndsWith("']"))
+            if (reader.TokenType == JsonToken.StartObject)
             {
-                name = name.Replace("['", string.Empty).Replace("']", string.Empty);
+                reader.Read();
             }
 
+            if (reader.TokenType != JsonToken.PropertyName)
+            {
+                return null;
+            }
+
+            var @class = JProperty.Load(reader);
+            var name = @class.Name;
+            var @object = @class.Value as JObject;
             var properties = new HashSet<IProperty>();
             foreach (var property in @object)
             {

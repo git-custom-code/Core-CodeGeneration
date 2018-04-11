@@ -49,7 +49,12 @@ namespace CustomCode.Core.CodeGeneration.Modelling.ClassModel
         /// <returns> A human readable string representation of this instance. </returns>
         public override string ToString()
         {
-            return $"{Namespaces.Count()} namespaces";
+            var count = Namespaces.Count();
+            if (count == 1)
+            {
+                return "1 namespace";
+            }
+            return $"{count} namespaces";
         }
 
         #endregion

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>CustomCode.Core.CodeGeneration.Modelling.ClassModel.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+    <Compile Include="..\..\Shared\SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CustomCode.Test.BehaviorDrivenDevelopment" Version="1.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CodeGeneration.Modelling.ClassModel\Core.CodeGeneration.Modelling.ClassModel.csproj" />
+    <ProjectReference Include="..\..\Core\CodeGeneration.Modelling\Core.CodeGeneration.Modelling.csproj" />
+  </ItemGroup>
+
+</Project>
