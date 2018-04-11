@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CustomCode.Core.Composition" Version="1.0.0" />
+    <PackageReference Include="CustomCode.Core.Composition" Version="1.0.1" />
     <PackageReference Include="CustomCode.Core.ExceptionHandling" Version="1.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
