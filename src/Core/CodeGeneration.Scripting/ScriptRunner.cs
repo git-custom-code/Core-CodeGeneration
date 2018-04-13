@@ -1,5 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Scripting
 {
+    using CustomCode.Core.Composition;
     using Features;
     using Microsoft.CodeAnalysis.CSharp.Scripting;
     using Microsoft.CodeAnalysis.Scripting;
@@ -9,7 +10,8 @@ namespace CustomCode.Core.CodeGeneration.Scripting
     using System.IO;
     using System.Reflection;
     using System.Threading.Tasks;
- 
+
+    [Export]
     public sealed class ScriptRunner : IScriptRunner
     {
         #region Dependencies
@@ -17,11 +19,18 @@ namespace CustomCode.Core.CodeGeneration.Scripting
         /// <summary>
         /// Creates a new instance of the <see cref="ScriptRunner"/> type.
         /// </summary>
+        /// <param name="contextFactory"> A factory that can create <see cref="IScriptContext"/> instances. </param>
         /// <param name="featureAnalyzers"> A collection with available <see cref="IFeatureAnalyzer"/>s. </param>
-        public ScriptRunner(IEnumerable<IFeatureAnalyzer> featureAnalyzers)
+        public ScriptRunner(Func<dynamic, IScriptContext> contextFactory, IEnumerable<IFeatureAnalyzer> featureAnalyzers)
         {
+            ContextFactory = contextFactory;
             FeatureAnalyzers = featureAnalyzers;
         }
+
+        /// <summary>
+        /// Gets a factory that can create <see cref="IScriptContext"/> instances.
+        /// </summary>
+        private Func<dynamic, IScriptContext> ContextFactory { get; }
 
         /// <summary>
         /// Gets a collection with available <see cref="IFeatureAnalyzer"/>s.
@@ -54,22 +63,37 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                     var code = script.Code;
                     var compilation = script.GetCompilation();
 
-                    var context = new ScriptContext();
                     foreach (var analyzer in FeatureAnalyzers)
                     {
                         if (analyzer.HasFeature(compilation.SyntaxTrees, out var feature))
                         {
-                            if (feature is IParameterCollection parameterFeature)
-                            {
-                                parameterFeature.UpdateValues(parameters);
-                                context = new ScriptContext(parameterFeature.AsDynamic());
-                            }
-
                             features.Add(feature);
                         }
                     }
+
+                    IScriptContext context;
                     var result = new Script(code, features);
-                    result.Feature<IParameterCollection>()?.ValidateParameterNames(true, false, parameters);
+
+                    var parameterFeature = result.Feature<IParameterCollection>();
+                    if (parameterFeature != null)
+                    {
+                        parameterFeature.UpdateValues(parameters);
+                        parameterFeature.ValidateParameterNames(true, false, parameters);
+                        context = ContextFactory(parameterFeature.AsDynamic());
+                    }
+                    else
+                    {
+                        context = ContextFactory(null);
+                    }
+
+                    if (result.HasFeature<IModelCollection>())
+                    {
+                        var changedOptions = script.Options.AddReferences(typeof(Modelling.IModel).GetTypeInfo().Assembly);
+                        changedOptions = changedOptions.AddImports(
+                            typeof(Modelling.IModel).GetTypeInfo().Namespace,
+                            typeof(Modelling.IO.IModelRepository).GetTypeInfo().Namespace);
+                        script = script.WithOptions(changedOptions);
+                    }
 
                     var diagnostics = compilation.GetDiagnostics();
                     var state = await script.RunAsync(context);

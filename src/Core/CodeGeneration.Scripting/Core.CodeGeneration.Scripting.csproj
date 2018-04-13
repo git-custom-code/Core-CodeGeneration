@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CustomCode.Core.Composition" Version="1.0.1" />
     <PackageReference Include="CustomCode.Core.ExceptionHandling" Version="1.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.7.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
