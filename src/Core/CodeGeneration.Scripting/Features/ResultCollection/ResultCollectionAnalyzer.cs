@@ -1,5 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Scripting.Features
 {
+    using Composition;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using System;
@@ -10,6 +11,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting.Features
     /// An <see cref="IFeatureAnalyzer"/> that analyzes if an <see cref="IScript"/> source code
     /// uses result values.
     /// </summary>
+    [Export]
     public sealed class ResultCollectionAnalyzer : IFeatureAnalyzer
     {
         #region Data

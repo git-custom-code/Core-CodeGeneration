@@ -1,6 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Scripting.Features
 {
-    using CustomCode.Core.CodeGeneration.Scripting.ExceptionHandling;
+    using ExceptionHandling;
     using System.Collections;
     using System.Collections.Generic;
     using System.Dynamic;
@@ -83,7 +83,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting.Features
                 expando.Add(tupel.Key, tupel.Value);
             }
 
-            return expando;
+            return (dynamic)expando;
         }
 
         /// <summary>

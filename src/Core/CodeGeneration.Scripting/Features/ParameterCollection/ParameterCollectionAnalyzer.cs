@@ -1,5 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Scripting.Features
 {
+    using Composition;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using System;
@@ -10,6 +11,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting.Features
     /// An <see cref="IFeatureAnalyzer"/> that analyzes if an <see cref="IScript"/> source code
     /// uses input parameters.
     /// </summary>
+    [Export]
     public sealed class ParameterCollectionAnalyzer : IFeatureAnalyzer
     {
         #region Data
@@ -29,7 +31,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting.Features
         /// </summary>
         /// <param name="sourceCode"> The script's source code (as Roslyn <see cref="SyntaxTree"/> representation). </param>
         /// <param name="feature"> The script's <see cref="ParameterCollection"/> feature (if present) or null otherwise. </param>
-        /// <returns> True if the <see cref="ParameterCollection"/> featuree was found, false otherwise. </returns>
+        /// <returns> True if the <see cref="ParameterCollection"/> feature was found, false otherwise. </returns>
         public bool HasFeature(IEnumerable<SyntaxTree> sourceCode, out IFeature feature)
         {
             if (sourceCode == null || !sourceCode.Any())
