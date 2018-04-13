@@ -4,7 +4,15 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <RootNamespace>CustomCode.Core.CodeGeneration.Modelling.ClassModel.Tests</RootNamespace>
+    <RootNamespace>CustomCode.Core.CodeGeneration.Modelling.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,8 +29,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\CodeGeneration.Modelling.ClassModel\Core.CodeGeneration.Modelling.ClassModel.csproj" />
     <ProjectReference Include="..\..\Core\CodeGeneration.Modelling\Core.CodeGeneration.Modelling.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\ClassModel.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

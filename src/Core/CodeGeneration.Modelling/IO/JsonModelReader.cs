@@ -19,7 +19,7 @@ namespace CustomCode.Core.CodeGeneration.Modelling.IO
         /// </summary>
         /// <param name="path"> The path to the persisted model. </param>
         /// <returns> The model's (type) id and content. </returns>
-        public async Task<(Guid id, string model)> LoadFromAsync(string path)
+        public async Task<(Guid id, string data)> LoadFromAsync(string path)
         {
             using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
             using (var streamReader = new StreamReader(stream))
@@ -36,7 +36,7 @@ namespace CustomCode.Core.CodeGeneration.Modelling.IO
                             reader.Read();
                             var serializer = new JsonSerializer();
                             var id = serializer.Deserialize<Guid>(reader);
-                            return (id: id, model: json);
+                            return (id: id, data: json);
                         }
                     }
                 }

@@ -13,6 +13,6 @@ namespace CustomCode.Core.CodeGeneration.Modelling.IO
         /// </summary>
         /// <param name="path"> The path to the persisted model. </param>
         /// <returns> The model's (type) id and content. </returns>
-        Task<(Guid id, string model)> LoadFromAsync(string path);
+        Task<(Guid id, string data)> LoadFromAsync(string path);
     }
 }
