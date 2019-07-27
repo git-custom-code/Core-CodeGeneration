@@ -1,11 +1,12 @@
 namespace CustomCode.Core.CodeGeneration.Scripting
 {
-    using CustomCode.Core.Composition;
+    using Features;
+    using Composition;
     using Modelling.IO;
     using System.Dynamic;
 
     /// <summary>
-    /// Properties within this context can be used directly from the source code of any <see cref="IScript"/>.
+    /// Context properties can be used directly from any <see cref="IScript"/>'s source code.
     /// </summary>
     [Export]
     public sealed class ScriptContext : IScriptContext
@@ -17,10 +18,12 @@ namespace CustomCode.Core.CodeGeneration.Scripting
         /// </summary>
         /// <param name="inputParameter"> The context's input parameters. </param>
         /// <param name="models"> Repository that allows access to persisted <see cref="Modelling.IModel"/> instances. </param>
+        /// <param name="codeFileCollection"> The script's generated C# code files. </param>
         [FactoryConstructor(0)]
-        public ScriptContext(dynamic inputParameter, IModelRepository models)
+        public ScriptContext(dynamic inputParameter, IModelRepository models, ICodeFileCollection codeFileCollection)
         {
-            In = inputParameter; // ?? new ExpandoObject();
+            Code = codeFileCollection;
+            In = inputParameter ?? new ExpandoObject();
             Models = models;
         }
 
@@ -28,40 +31,16 @@ namespace CustomCode.Core.CodeGeneration.Scripting
 
         #region Data
 
-        /// <summary>
-        /// Gets a collection of script input parameters.
-        /// </summary>
-        /// <example>
-        ///
-        /// Usage in .csx scripts:
-        ///
-        /// var param1 = In.Parameter1
-        ///
-        /// </example>
+        /// <inheritdoc />
+        public ICodeFileCollection Code { get; }
+
+        /// <inheritdoc />
         public dynamic In { get; }
 
-        /// <summary>
-        /// Gets access to persisted <see cref="Modelling.IModel"/> instances.
-        /// </summary>
-        /// <example>
-        ///
-        /// Usage in .csx scripts:
-        ///
-        /// var model = await Models.LoadAsync{IClassModel}(@".\path\to\model.json");
-        ///
-        /// </example>
+        /// <inheritdoc />
         public IModelRepository Models { get; }
 
-        /// <summary>
-        /// Gets a collection of script output parameters.
-        /// </summary>
-        /// <example>
-        ///
-        /// Usage in .csx scripts:
-        ///
-        /// Out.Parameter1 = param1;
-        ///
-        /// </example>
+        /// <inheritdoc />
         public dynamic Out { get; } = new ExpandoObject();
 
         #endregion
