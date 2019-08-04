@@ -1,0 +1,17 @@
+{
+    "Id": "5bc5bb1f-60eb-419e-9458-c11f9a494001",
+    "My.First.Namespace": {
+        "ClassA": {
+            "DecimalProperty": "decimal"
+        }
+    },
+    "My.Second.Namespace": {
+        "ClassB": {
+            "StringProperty": "string",
+            "IntProperty": "int"
+        },
+        "ClassC": {
+            "ObjectProperty": "object"
+        }
+    }
+}

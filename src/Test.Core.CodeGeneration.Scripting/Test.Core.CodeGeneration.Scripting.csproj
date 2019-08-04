@@ -9,17 +9,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CustomCode.Test.BehaviorDrivenDevelopment" Version="1.0.1" />
+    <PackageReference Include="CustomCode.Test.BehaviorDrivenDevelopment" Version="1.1.2-alpha.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core.CodeGeneration.Scripting\Core.CodeGeneration.Scripting.csproj" />
+    <ProjectReference Include="..\Core\CodeGeneration.Modelling.ClassModel\Core.CodeGeneration.Modelling.ClassModel.csproj" />
+    <ProjectReference Include="..\Core\CodeGeneration.Modelling\Core.CodeGeneration.Modelling.csproj" />
+    <ProjectReference Include="..\Core\CodeGeneration.Scripting\Core.CodeGeneration.Scripting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Models\ClassModel.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Model\Model.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Parameter\MultipleParameter.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
