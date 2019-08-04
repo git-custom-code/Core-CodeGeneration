@@ -2,18 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Title>Modelling for c# class models.</Title>
+    <Description>Code modelling strategy for creating c# class models.</Description>
     <RootNamespace>CustomCode.Core.CodeGeneration.Modelling.ClassModel</RootNamespace>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.6\Core.CodeGeneration.Modelling.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-    <Compile Include="..\..\Shared\SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CustomCode.Core.Composition" Version="1.0.1" />
@@ -23,5 +15,4 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeGeneration.Modelling\Core.CodeGeneration.Modelling.csproj" />
   </ItemGroup>
-
 </Project>

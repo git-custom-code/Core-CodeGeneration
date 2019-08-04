@@ -1,0 +1,11 @@
+<Project>
+
+  <PropertyGroup>
+    <Authors>CustomCode</Authors>
+    <Company>CustomCode</Company>
+    <Copyright>Copyright © 2018-2019</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Product>C# code generation via *.csx scripts.</Product>
+  </PropertyGroup>
+
+</Project>
