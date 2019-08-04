@@ -95,12 +95,20 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                         script = script.WithOptions(changedOptions);
                     }
 
+                    if (result.HasFeature<ICodeFileCollection>())
+                    {
+                        var changedOptions = script.Options.AddImports(
+                            typeof(CodeFiles.ICodeFile).GetTypeInfo().Namespace);
+                        script = script.WithOptions(changedOptions);
+                    }
+
                     var diagnostics = compilation.GetDiagnostics();
                     var state = await script.RunAsync(context);
                     var returnValue = state.ReturnValue;
 
                     result.Feature<IMutableResultCollection>()?.ValidateResultValueNames(context.Out);
                     result.Feature<IMutableResultCollection>()?.UpdateValues(context.Out);
+                    result.Feature<IMutableCodeFileCollection>()?.UpdateValues(context.Code);
                     return result;
                 }
             }
@@ -138,11 +146,12 @@ namespace CustomCode.Core.CodeGeneration.Scripting
                 .WithReferences(new[]
                     {
                         typeof(DynamicObject).GetTypeInfo().Assembly, // System.Dynamic.Runtime
-                        typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).GetTypeInfo().Assembly // Microsoft.CSharp
+                        typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).GetTypeInfo().Assembly, // Microsoft.CSharp
+                        typeof(IScript).GetTypeInfo().Assembly
                     })
                 .WithImports(new[]
                     {
-                            typeof(DynamicObject).GetTypeInfo().Namespace // System.Dynamic
+                        typeof(DynamicObject).GetTypeInfo().Namespace // System.Dynamic
                     });
             return options;
         }

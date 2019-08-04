@@ -1,6 +1,6 @@
 namespace CustomCode.Core.CodeGeneration.Scripting.Features
 {
-    using Code;
+    using CodeFiles;
     using Composition;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;

@@ -14,11 +14,6 @@ namespace CustomCode.Core.CodeGeneration.Scripting.CodeFiles
         Identity<string> Id { get; }
 
         /// <summary>
-        /// Get the code file's generated code.
-        /// </summary>
-        string GeneratedCode { get; }
-
-        /// <summary>
         /// Emits the specified <paramref name="sourceCode"/> once.
         /// </summary>
         /// <param name="sourceCode"> The source code to be emitted. </param>
@@ -36,5 +31,10 @@ namespace CustomCode.Core.CodeGeneration.Scripting.CodeFiles
         /// </param>
         /// <returns> This <see cref="ICodeFile"/> instance for fluently calling additional api methods. </returns>
         ICodeFile EmitForEach<T>(IEnumerable<T> array, Func<T, string> createSourceCodeAction);
+
+        /// <summary>
+        /// Get the code file's generated code.
+        /// </summary>
+        string GenerateCode();
     }
 }
