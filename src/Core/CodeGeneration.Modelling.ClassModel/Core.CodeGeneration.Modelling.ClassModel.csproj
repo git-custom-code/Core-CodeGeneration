@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Title>Modelling for c# class models.</Title>
     <Description>Code modelling strategy for creating c# class models.</Description>
     <RootNamespace>CustomCode.Core.CodeGeneration.Modelling.ClassModel</RootNamespace>
