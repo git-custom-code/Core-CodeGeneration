@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-
+    <Title>Core.CodeGeneration.Scripting tests.</Title>
+    <Description>Automated tests for the Core.CodeGeneration.Scripting assembly.</Description>
     <IsPackable>false</IsPackable>
-
     <RootNamespace>CustomCode.Core.CodeGeneration.Scripting.Tests</RootNamespace>
   </PropertyGroup>
 

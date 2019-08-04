@@ -1,16 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Title>Core.CodeGeneration.Modelling.ClassModel tests.</Title>
+    <Description>Automated tests for the Core.CodeGeneration.Modelling.ClassModel assembly.</Description>
     <IsPackable>false</IsPackable>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>CustomCode.Core.CodeGeneration.Modelling.ClassModel.Tests</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\Shared\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-    <Compile Include="..\..\Shared\SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CustomCode.Test.BehaviorDrivenDevelopment" Version="1.1.2-alpha.2" />
