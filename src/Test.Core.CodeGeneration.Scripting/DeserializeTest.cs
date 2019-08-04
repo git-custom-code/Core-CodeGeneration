@@ -7,7 +7,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting.Tests
     public sealed class DeserializeTest
     {
         [Fact]
-        public async void Test()
+        public void Test()
         {
             var model = JsonConvert.DeserializeObject<IClassModel>(@"
                 {

@@ -19,7 +19,7 @@ namespace CustomCode.Core.CodeGeneration.Scripting
         /// <param name="inputParameter"> The context's input parameters. </param>
         /// <param name="models"> Repository that allows access to persisted <see cref="Modelling.IModel"/> instances. </param>
         /// <param name="codeFileCollection"> The script's generated C# code files. </param>
-        [FactoryConstructor(0)]
+        [FactoryParameters("inputParameter")]
         public ScriptContext(dynamic inputParameter, IModelRepository models, ICodeFileCollection codeFileCollection)
         {
             Code = codeFileCollection;
